@@ -13,10 +13,28 @@ class ProductListPage {
       return this.productItemDiv(index).find(".inventory_item_desc");
     },
     productPrice: function (index) {
-        return this.productItemDiv(index).find(".inventory_item_desc");
-      },
+      return this.productItemDiv(index).find(".inventory_item_desc");
+    },
+    addToCartButton: function (index) {
+      return this.productItemDiv(index).find('[data-test="add-to-cart-sauce-labs-backpack"]');
+    },
+    removeButton: function (index) {
+      return this.productItemDiv(index).find('[data-test="remove-sauce-labs-bolt-t-shirt"]');
+    },
+    productSortDropDown: () => cy.get('[data-test="product_sort_container"]'),
   };
 
-  
+  // Actions
+  clickOnAddToCartBtn(index) {
+    this.elements.addToCartButton(index).click();
+  }
+
+  clickOnRemoveBtn(index) {
+    this.elements.removeButton(index).click();
+  }
+
+  selectSortOption(option) {
+    this.elements.productDescription().select(option);
+  }
 }
 export default ProductListPage;
