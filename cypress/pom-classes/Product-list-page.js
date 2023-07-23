@@ -33,8 +33,8 @@ class ProductListPage {
     this.elements.removeButton(index).click();
   }
 
-  selectSortOption (option) {
-    this.elements.productDescription().select(option)
+  selectSortOption(option) {
+    this.elements.productDescription().select(option);
   }
 }
 export default ProductListPage;
