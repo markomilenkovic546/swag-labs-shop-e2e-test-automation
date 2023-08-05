@@ -154,7 +154,7 @@ describe("Tests which cover functionalites realated to cart management ", () => 
 
   it("User cannot proceed to checkout if the cart is empty", function () {
     header.clickOnTheCartIcon();
-    cart.elements.checkoutBtn().should('be.enabled')
+    cart.elements.checkoutBtn().should('be.disabled')
     
   });
 
