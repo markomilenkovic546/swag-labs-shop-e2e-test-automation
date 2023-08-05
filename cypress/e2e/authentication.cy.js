@@ -14,7 +14,7 @@ beforeEach(function () {
   });
 });
 describe("Login functionalites ", () => {
-  it("User should succesfully login with valid credentials", function () {
+  it("User can login with valid credentials", function () {
     loginPage.typeUsername(this.standard_user.username);
     loginPage.typePassword(this.standard_user.password);
     loginPage.clickOnLoginBtn();
@@ -22,7 +22,7 @@ describe("Login functionalites ", () => {
     cy.url().should("include", "inventory.html");
   });
 
-  it("Locked_out user should not be able to login", function () {
+  it("Lockedout user cannot login", function () {
     loginPage.typeUsername(this.locked_out_user.username);
     loginPage.typePassword(this.locked_out_user.password);
     loginPage.clickOnLoginBtn();
@@ -31,7 +31,7 @@ describe("Login functionalites ", () => {
     cy.url().should("not.include", "inventory.html");
   });
 
-  it("User should not be able to login if the password is incorrect", function () {
+  it("User cannot login with incorrect password", function () {
     loginPage.typeUsername(this.standard_user.username);
     loginPage.typePassword(this.standard_user.password + "1");
     loginPage.clickOnLoginBtn();
@@ -40,7 +40,7 @@ describe("Login functionalites ", () => {
     cy.url().should("not.include", "inventory.html");
   });
 
-  it("User should not be able to login if the username is not registered", function () {
+  it("User cannot login with unregistered username", function () {
     loginPage.typeUsername(this.standard_user.username + "r");
     loginPage.typePassword(this.standard_user.password);
     loginPage.clickOnLoginBtn();
@@ -49,7 +49,7 @@ describe("Login functionalites ", () => {
     cy.url().should("not.include", "inventory.html");
   });
 
-  it("User should not be able to login if the email field is empty", function () {
+  it("User cannot login with empty username field", function () {
     loginPage.typePassword(this.standard_user.password);
     loginPage.clickOnLoginBtn();
     loginPage.elements.errorMessage()
@@ -57,7 +57,7 @@ describe("Login functionalites ", () => {
     cy.url().should("not.include", "inventory.html");
   });
 
-  it("User should not be able to login if the email field is empty", function () {
+  it("User cannot login with empty password field", function () {
     loginPage.typeUsername(this.standard_user.username);
     loginPage.clickOnLoginBtn();
     loginPage.elements.errorMessage()
@@ -65,7 +65,7 @@ describe("Login functionalites ", () => {
     cy.url().should("not.include", "inventory.html");
   });
 
-  it("User should not be able to login if the space key is typed before valid email", function () {
+  it("User cannot login when space key is typed before valid username", function () {
     loginPage.typeUsername(" " + this.standard_user.username );
     loginPage.typePassword(this.standard_user.password);
     loginPage.clickOnLoginBtn();
@@ -75,7 +75,7 @@ describe("Login functionalites ", () => {
   });
 
 
-  it("User should not be able to login if the space key is typed before valid password", function () {
+  it("User cannot login when space key is typed before valid password", function () {
     loginPage.typeUsername(this.standard_user.username );
     loginPage.typePassword(" " + this.standard_user.password);
     loginPage.clickOnLoginBtn();
