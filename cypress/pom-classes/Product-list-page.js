@@ -16,10 +16,10 @@ class ProductListPage {
       return this.productItemDiv(index).find(".inventory_item_desc");
     },
     addToCartButton: function (index) {
-      return this.productItemDiv(index).find('[data-test="add-to-cart-sauce-labs-backpack"]');
+      return this.productItemDiv(index).find('button').contains('Add to cart');
     },
     removeButton: function (index) {
-      return this.productItemDiv(index).find('[data-test="remove-sauce-labs-bolt-t-shirt"]');
+      return this.productItemDiv(index).find('button').contains('Remove');
     },
     productSortDropDown: () => cy.get('[data-test="product_sort_container"]'),
   };
