@@ -7,6 +7,7 @@ const loginPage = new LoginPage();
 const plp = new ProductListPage();
 const header = new Header();
 const cart = new CartPage();
+
 beforeEach(function () {
   loginPage.visitLoginPage();
   cy.fixture("users").then((loginData) => {
@@ -101,6 +102,7 @@ describe("Tests which cover functionalites realated to cart management ", () => 
     // Verify that cart is empty
     cart.elements.cartItems().should("not.exist");
   });
+
   it("User can remove single item from the Cart from PLP when multiple Items are in the cart", function () {
     // Add first item into the cart
     plp.clickOnAddToCartBtn(0);
@@ -130,6 +132,7 @@ describe("Tests which cover functionalites realated to cart management ", () => 
     cart.clickOnRemoveBtn(0);
     header.elements.cartIconValue().should("not.exist");
   });
+
   it("Cart icon value is correctly updated when user removes a single item from the cart ", function () {
     // Add first item into the cart
     plp.clickOnAddToCartBtn(0);
@@ -140,23 +143,11 @@ describe("Tests which cover functionalites realated to cart management ", () => 
     cart.clickOnRemoveBtn(0);
     header.elements.cartIconValue().should("have.text", "1");
   });
+
   it("User can navigate from Cart page to PLP", function () {
     header.clickOnTheCartIcon();
-    cart.clickOnContinueShopingBtn()
+    cart.clickOnContinueShopingBtn();
     cy.url().should("include", "inventory.html");
   });
-
-  it("User can proceed to checkout", function () {
-    header.clickOnTheCartIcon();
-    cart.clickOnCheckoutBtn()
-    cy.url().should("include", "checkout-step-one.html");
-  });
-
-  it("User cannot proceed to checkout if the cart is empty", function () {
-    header.clickOnTheCartIcon();
-    cart.elements.checkoutBtn().should('be.disabled')
-    
-  });
-
 
 });

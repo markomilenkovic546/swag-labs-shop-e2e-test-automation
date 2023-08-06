@@ -28,7 +28,7 @@
         name:"Test.allTheThings() T-Shirt (Red)",
         description:"This classic Sauce Labs t-shirt is perfect to wear when cozying up to your keyboard to automate a few tests. Super-soft and comfy ringspun combed cot",
         price:"15.99"
-    },
+    }
  
-
 ]
+

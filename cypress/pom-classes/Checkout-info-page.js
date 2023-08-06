@@ -7,6 +7,9 @@ class CheckOutInfoPage {
       cancelBtn: () => cy.get('[data-test="cancel"]'),
       continueBtn: () => cy.get('[data-test="continue"]'),
       errorMessage: () => cy.get('[data-test="error"]'),
+      hideErrorMessageBtn: function () {
+        return this.errorMessage().find(".error-button");
+      }
     }
 
     // Actions
@@ -24,6 +27,9 @@ class CheckOutInfoPage {
       }
       clickOnContinueBtn() {
         this.elements.continueBtn().click();
+      }
+      clickOnHideErrorMessageBtn() {
+        this.elements.hideErrorMessageBtn().click();
       }
   }
   export default CheckOutInfoPage;
