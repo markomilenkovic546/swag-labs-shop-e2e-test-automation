@@ -18,6 +18,8 @@ class CartPage {
     continueShopingBtn: () => cy.get('[data-test="continue-shopping"]'),
     checkoutBtn: () => cy.get('[data-test="checkout"]'),
   };
+
+  
   // Actions
   clickOnRemoveBtn(index) {
     this.elements.removeButton(index).click();
