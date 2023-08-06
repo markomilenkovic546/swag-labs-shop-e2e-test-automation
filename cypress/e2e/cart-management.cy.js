@@ -151,6 +151,4 @@ describe("Tests which cover functionalites realated to cart management ", () => 
     cy.url().should("include", "inventory.html");
   });
 
-
-
 });
