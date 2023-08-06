@@ -14,6 +14,7 @@ beforeEach(function () {
     this.standard_user = loginData[0];
     cy.login(this.standard_user.username, this.standard_user.password);
   });
+  cy.writeProductDataIntoFixtureFile()
   cy.fixture("products").then((productData) => {
     this.products = productData;
   });
