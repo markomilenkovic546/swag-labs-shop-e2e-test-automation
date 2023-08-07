@@ -1,5 +1,4 @@
-class CheckOutOverviewPage {
-
+class CheckoutOverviewPage {
     // Elements
     elements = {
       title: () => cy.get(".title"),
@@ -68,4 +67,4 @@ class CheckOutOverviewPage {
     this.elements.finishBtn().click();
   }
 }
-export default CheckOutOverviewPage;
+export default CheckoutOverviewPage;

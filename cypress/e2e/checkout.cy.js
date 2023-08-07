@@ -2,15 +2,15 @@ import LoginPage from "../pom-classes/Login-page";
 import ProductListPage from "../pom-classes/Product-list-page";
 import Header from "../pom-classes/Header";
 import CartPage from "../pom-classes/Cart-page";
-import CheckOutInfoPage from "../pom-classes/Checkout-info-page";
-import CheckOutOverviewPage from "../pom-classes/Checkout-overview-page";
+import CheckoutInfoPage from "../pom-classes/Checkout-info-page";
+import CheckoutOverviewPage from "../pom-classes/Checkout-overview-page";
 
 const loginPage = new LoginPage();
 const plp = new ProductListPage();
 const header = new Header();
 const cart = new CartPage();
-const checkoutInfoPage = new CheckOutInfoPage();
-const checkoutOverviewPage = new CheckOutOverviewPage();
+const checkoutInfoPage = new CheckoutInfoPage();
+const checkoutOverviewPage = new CheckoutOverviewPage();
 
 beforeEach(function () {
   loginPage.visitLoginPage();
@@ -33,6 +33,7 @@ afterEach(function () {
   header.clickOnResetAppStateLinkFromBurger();
 });
 
+describe("Tests which cover functionalites related to Checkout ", () => {
 it("User can proceed to checkout", function () {
   // Add first item into the cart
   plp.clickOnAddToCartBtn(0);
@@ -96,7 +97,7 @@ it("User cannot continue to Checkout-overview page with letters and numbers in Z
 it("User cannot continue to Checkout-overview page with all empty fields ", function () {
   cy.proceedToCheckout();
   checkoutInfoPage.clickOnContinueBtn();
-  checkoutInfoPage.elements.errorMessage().should("have.text", "Error: Last Name is required");
+  checkoutInfoPage.elements.errorMessage().should("have.text", "Error: First Name is required");
   cy.url().should("not.include", "checkout-step-two.html");
 });
 
@@ -151,7 +152,7 @@ it("Correct shiping info is shown on the Checkout-overview page", function () {
   checkoutOverviewPage.elements.shippingInformation().should("have.text", this.checkoutInfo.shippingInformation);
 });
 
-it.only("Correct item total price is shown on the Checkout-overview page", function () {
+it("Correct item total price is shown on the Checkout-overview page", function () {
   // Add first item into the cart
   plp.clickOnAddToCartBtn(0);
   // Add second item into the cart
@@ -168,7 +169,7 @@ it.only("Correct item total price is shown on the Checkout-overview page", funct
   });
 });
 
-it.only("Correct tax value is shown on the Checkout-overview page", function () {
+it("Correct tax value is shown on the Checkout-overview page", function () {
   // Add first item into the cart
   plp.clickOnAddToCartBtn(0);
   // Add second item into the cart
@@ -187,7 +188,7 @@ it.only("Correct tax value is shown on the Checkout-overview page", function () 
   });
 })
 
-  it.only("Correct Total price is shown on the Checkout-overview page", function () {
+  it("Correct Total price is shown on the Checkout-overview page", function () {
     // Add first item into the cart
     plp.clickOnAddToCartBtn(0);
     // Add second item into the cart
@@ -312,3 +313,4 @@ it("Correct tax value is shown on the Checkout-overview page", function () {
     });
   })
 });
+})

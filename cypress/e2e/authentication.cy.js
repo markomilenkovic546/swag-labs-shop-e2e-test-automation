@@ -9,11 +9,9 @@ beforeEach(function () {
   cy.fixture("users").then((data) => {
     this.standard_user = data[0];
     this.locked_out_user = data[1];
-    this.problem_user_user = data[2];
-    this.performance_glitch_user = data[3];
   });
 });
-describe("Login functionalites ", () => {
+describe("Tests which cover functionalites related to Authentication ", () => {
   it("User can login with valid credentials", function () {
     loginPage.typeUsername(this.standard_user.username);
     loginPage.typePassword(this.standard_user.password);

@@ -2,13 +2,13 @@ import LoginPage from "../pom-classes/Login-page";
 import ProductListPage from "../pom-classes/Product-list-page";
 import Header from "../pom-classes/Header";
 import CartPage from "../pom-classes/Cart-page";
-import CheckOutInfoPage from "../pom-classes/Checkout-info-page";
+import CheckoutInfoPage from "../pom-classes/Checkout-info-page";
 
 const loginPage = new LoginPage();
 const plp = new ProductListPage();
 const header = new Header();
 const cart = new CartPage();
-const checkoutInfoPage = new CheckOutInfoPage();
+const checkoutInfoPage = new CheckoutInfoPage();
 
 Cypress.Commands.add("login", (username, password) => {
   loginPage.typeUsername(username);
@@ -64,55 +64,52 @@ Cypress.Commands.add("writeProductDataIntoFixtureFile", () => {
 });
 
 Cypress.Commands.add("sortExpectedProductsByPriceAscending", (products) => {
-   function orderByPriceDescending(products) {
-     return products.slice().sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-   }
- 
-   const expectedSortedProducts = orderByPriceDescending(products);
-   return expectedSortedProducts
- });
+  function orderByPriceDescending(products) {
+    return products.slice().sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+  }
 
- Cypress.Commands.add("sortExpectedProductsByPriceDESC", (products) => {
-   function orderByPriceDescending(products) {
-     return products.slice().sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-   }
- 
-   const expectedSortedProducts = orderByPriceDescending(products);
-   return expectedSortedProducts
- });
+  const expectedSortedProducts = orderByPriceDescending(products);
+  return expectedSortedProducts;
+});
 
+Cypress.Commands.add("sortExpectedProductsByPriceDESC", (products) => {
+  function orderByPriceDescending(products) {
+    return products.slice().sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+  }
 
- Cypress.Commands.add("sortExpectedProductsByNameAZ", (products) => {
-   function orderByNameAscending(products) {
-      return products.slice().sort((a, b) => a.name.localeCompare(b.name));
-    }
-    
-    const expectedSortedProductsByNameAscending = orderByNameAscending(products);
-    return expectedSortedProductsByNameAscending;
-    
- });
+  const expectedSortedProducts = orderByPriceDescending(products);
+  return expectedSortedProducts;
+});
 
- Cypress.Commands.add("sortExpectedProductsByNameZA", (products) => {
-   function orderByNameDescending(products) {
-      return products.slice().sort((a, b) => b.name.localeCompare(a.name));
-    }
-    
-    const expectedSortedProductsByNameDescending = orderByNameDescending(products);
-    return expectedSortedProductsByNameDescending;
-    
-    
- });
- Cypress.Commands.add("compareProductListWithTestData", (expectedSortedProducts) => {
-   for (let i = 0; i < expectedSortedProducts.length; i++) {
-      plp.elements.productName(i).should('have.text', expectedSortedProducts[i].name);
-      plp.elements.productDescription(i).should('have.text', expectedSortedProducts[i].description);
-      plp.elements.productPrice(i).invoke("text").then((productPriceText) => {
-           const productPrice = productPriceText.match(/\d+\.*\d*/g)[0];
-           console.log(productPrice)
-           expect(productPrice).to.eq(expectedSortedProducts[i].price)
-           plp.elements.productImage(i)
-             .should('have.attr', 'src', expectedSortedProducts[i].image)
-             });
-            }
- });
- 
+Cypress.Commands.add("sortExpectedProductsByNameAZ", (products) => {
+  function orderByNameAscending(products) {
+    return products.slice().sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  const expectedSortedProductsByNameAscending = orderByNameAscending(products);
+  return expectedSortedProductsByNameAscending;
+});
+
+Cypress.Commands.add("sortExpectedProductsByNameZA", (products) => {
+  function orderByNameDescending(products) {
+    return products.slice().sort((a, b) => b.name.localeCompare(a.name));
+  }
+
+  const expectedSortedProductsByNameDescending = orderByNameDescending(products);
+  return expectedSortedProductsByNameDescending;
+});
+Cypress.Commands.add("compareProductListWithTestData", (expectedSortedProducts) => {
+  for (let i = 0; i < expectedSortedProducts.length; i++) {
+    plp.elements.productName(i).should("have.text", expectedSortedProducts[i].name);
+    plp.elements.productDescription(i).should("have.text", expectedSortedProducts[i].description);
+    plp.elements
+      .productPrice(i)
+      .invoke("text")
+      .then((productPriceText) => {
+        const productPrice = productPriceText.match(/\d+\.*\d*/g)[0];
+        console.log(productPrice);
+        expect(productPrice).to.eq(expectedSortedProducts[i].price);
+        plp.elements.productImage(i).should("have.attr", "src", expectedSortedProducts[i].image);
+      });
+  }
+});
