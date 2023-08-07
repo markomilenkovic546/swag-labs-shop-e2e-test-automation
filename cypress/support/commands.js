@@ -16,33 +16,6 @@ Cypress.Commands.add("login", (username, password) => {
   loginPage.clickOnLoginBtn();
 });
 
-/* Because FE of this demo webshop doesn't fetch product data from backend,
-product test data will be extracted from HTML and written into fixture file
-*/
-Cypress.Commands.add("writeProductDataIntoFixtureFile", () => {
-  let products = [];
-  plp.elements.products().each(($product, index, $list) => {
-    let product = {
-      name: null,
-      description: null,
-      price: null,
-    };
-    const productName = $product.find(".inventory_item_name").text();
-    const productDescription = $product.find(".inventory_item_desc").text();
-    cy.wrap($product)
-      .find(".inventory_item_price")
-      .invoke("text")
-      .then((productPriceText) => {
-        const productPrice = productPriceText.match(/\d+\.*\d*/g);
-        product.name = productName;
-        product.description = productDescription;
-        product.price = productPrice[0];
-        products.push(product);
-      });
-  });
-  console.log(products);
-  cy.writeFile("cypress/fixtures/products.js", products);
-});
 
 Cypress.Commands.add("proceedToCheckout", () => {
   plp.clickOnAddToCartBtn(0);
@@ -59,7 +32,6 @@ Cypress.Commands.add("submitCheckoutInfoForm", () => {
   });
 });
 
-
 Cypress.Commands.add("writeProductDataIntoFixtureFile", () => {
   let products = [];
   plp.elements.products().each(($product, index, $list) => {
@@ -67,20 +39,31 @@ Cypress.Commands.add("writeProductDataIntoFixtureFile", () => {
       name: null,
       description: null,
       price: null,
+      image: null,
     };
     const productName = $product.find(".inventory_item_name").text();
     const productDescription = $product.find(".inventory_item_desc").text();
     cy.wrap($product)
       .find(".inventory_item_price")
-      .invoke('text').then((productPriceText) => {
-        const productPrice = productPriceText.match(/\d+\.*\d*/g)
-        product.name = productName
-        product.description = productDescription
-        product.price = productPrice[0]
-        products.push(product)
+      .invoke("text")
+      .then((productPriceText) => {
+        const productPrice = productPriceText.match(/\d+\.*\d*/g);
+        cy.wrap($product)
+          .find("img")
+          .invoke("attr", "src")
+          .then((src) => {
+            product.name = productName;
+            product.description = productDescription;
+            product.price = productPrice[0];
+            product.image = src;
+            products.push(product);
+          });
+      });
   });
-});
-  console.log(products)
-  cy.writeFile('cypress/fixtures/products.js', products)
+  console.log(products);
+  cy.writeFile("cypress/fixtures/products.js", products);
 });
 
+Cypress.Commands.add("verifyProductDetailsData", ($product, expectedProduct) => {
+
+ });
