@@ -4,7 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "auth": "cypress run  --spec \"cypress/e2e/authentictaion.cy.js\"",
+    "cart-management": "cypress run  --spec \"cypress/e2e/cart-management.cy.js\"",
+    "checkout": "cypress run  --spec \"cypress/e2e/checkout.cy.js\"",
+    "order-placement": "cypress run  --spec \"cypress/e2e/order-placement.cy.js\"",
+    "product-catalog": "cypress run  --spec \"cypress/e2e/product-catalog.cy.js\"",
+    "product-sorting": "cypress run  --spec \"cypress/e2e/product-sorting.cy.js\"",
+    "smoke-tests": "cypress run  --spec \"cypress/e2e/smoke-tests.cy.js\""
   },
   "keywords": [],
   "author": "Marko Milenkovic",
