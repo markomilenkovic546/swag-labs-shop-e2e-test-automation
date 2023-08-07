@@ -1,5 +1,7 @@
 {
   "firstName": "John",
   "lastName": "Smith",
-  "zip": "546897"
+  "zip": "546897",
+  "paymentInformation": "SauceCard #31337",
+  "shippingInformation": "Free Pony Express Delivery!"
 }

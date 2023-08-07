@@ -18,6 +18,7 @@ beforeEach(function () {
     this.standard_user = loginData[0];
     cy.login(this.standard_user.username, this.standard_user.password);
   });
+  cy.writeProductDataIntoFixtureFile()
   cy.fixture("products").then((productData) => {
     this.products = productData;
   });
@@ -106,3 +107,105 @@ it("User can hide error message ", function () {
   checkoutInfoPage.elements.errorMessage().should('not.be','visible')
 });
 
+it("Products from the cart are shown on the Checkout-overview page ", function () {
+  // Add first item into the cart
+  plp.clickOnAddToCartBtn(0);
+  // Add second item into the cart
+  plp.clickOnAddToCartBtn(1);
+  // Open the "Cart" page
+  header.clickOnTheCartIcon();
+  cart.clickOnCheckoutBtn();
+  cy.submitCheckoutInfoForm();
+  //Verify that first item is same as in the cart
+  checkoutOverviewPage.elements.itemName(0).should("have.text", this.products[0].name);
+  checkoutOverviewPage.elements.itemDescription(0).should("have.text", this.products[0].description);
+  checkoutOverviewPage.elements.itemPrice(0).should("have.text", "$" + this.products[0].price);
+  //Verify that second item is same as in the cart
+  checkoutOverviewPage.elements.itemName(1).should("have.text", this.products[1].name);
+  checkoutOverviewPage.elements.itemDescription(1).should("have.text", this.products[1].description);
+  checkoutOverviewPage.elements.itemPrice(1).should("have.text", "$" + this.products[1].price);
+  checkoutOverviewPage.elements.cartItems().should("have.length", 2);
+});
+
+it("Correct payment info is shown on the Checkout-overview page", function () {
+  // Add first item into the cart
+  plp.clickOnAddToCartBtn(0);
+  // Add second item into the cart
+  plp.clickOnAddToCartBtn(1);
+  // Open the "Cart" page
+  header.clickOnTheCartIcon();
+  cart.clickOnCheckoutBtn();
+  cy.submitCheckoutInfoForm();
+  checkoutOverviewPage.elements.paymentInformation().should("have.text", this.checkoutInfo.paymentInformation);
+});
+
+it("Correct shiping info is shown on the Checkout-overview page", function () {
+  // Add first item into the cart
+  plp.clickOnAddToCartBtn(0);
+  // Add second item into the cart
+  plp.clickOnAddToCartBtn(1);
+  // Open the "Cart" page
+  header.clickOnTheCartIcon();
+  cart.clickOnCheckoutBtn();
+  cy.submitCheckoutInfoForm();
+  checkoutOverviewPage.elements.shippingInformation().should("have.text", this.checkoutInfo.shippingInformation);
+});
+
+it("Correct item total price is shown on the Checkout-overview page", function () {
+  // Add first item into the cart
+  plp.clickOnAddToCartBtn(0);
+  // Add second item into the cart
+  plp.clickOnAddToCartBtn(1);
+  // Open the "Cart" page
+  header.clickOnTheCartIcon();
+  cart.clickOnCheckoutBtn();
+  cy.submitCheckoutInfoForm();
+  checkoutOverviewPage.elements.itemTotal().then(($itemTotalPrice) => {
+    // Calculate expected total item price
+    const expectedItemTotalPrice = Number(this.products[0].price) + Number(this.products[1].price);
+    // Verify that total item price calculation is correct
+    cy.wrap($itemTotalPrice).should("have.text", `Item total: $${expectedItemTotalPrice}`);
+  });
+});
+
+it("Correct tax value is shown on the Checkout-overview page", function () {
+  // Add first item into the cart
+  plp.clickOnAddToCartBtn(0);
+  // Add second item into the cart
+  plp.clickOnAddToCartBtn(1);
+  // Open the "Cart" page
+  header.clickOnTheCartIcon();
+  cart.clickOnCheckoutBtn();
+  cy.submitCheckoutInfoForm();
+  checkoutOverviewPage.elements.tax().then(($taxValue) => {
+    // Calculate expected total item price
+    const expectedItemTotalPrice = Number(this.products[0].price) + Number(this.products[1].price);
+    // Calculate expected tax value when tax rate is 8%
+    const expectedTaxValue = expectedItemTotalPrice * 0.08;
+    // Verify that tax value calculation is correct
+    cy.wrap($taxValue).should("have.text", `Tax: $${expectedTaxValue.toFixed(2)}`);
+  });
+})
+
+  it("Correct Total price is shown on the Checkout-overview page", function () {
+    // Add first item into the cart
+    plp.clickOnAddToCartBtn(0);
+    // Add second item into the cart
+    plp.clickOnAddToCartBtn(1);
+    // Open the "Cart" page
+    header.clickOnTheCartIcon();
+    cart.clickOnCheckoutBtn();
+    cy.submitCheckoutInfoForm();
+    checkoutOverviewPage.elements.tax().then(($taxValue) => {
+      // Calculate expected total item price
+      const expectedItemTotalPrice = Number(this.products[0].price) + Number(this.products[1].price);
+      // Calculate expected tax value when tax rate is 8%
+      const expectedTaxValue = expectedItemTotalPrice * 0.08;
+      // Calculate expected tax value when tax rate is 8%
+      const expectedTotalPrice = expectedItemTotalPrice + expectedTaxValue
+      checkoutOverviewPage.elements.total().then(($totalPrice) => {
+      // Verify that Total price calculation is correct
+      cy.wrap($totalPrice).should("have.text", `Total: $${expectedTotalPrice.toFixed(2)}`);
+    });
+  })
+});
