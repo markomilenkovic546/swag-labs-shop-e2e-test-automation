@@ -5,7 +5,7 @@ class ProductListPage {
     productItemDiv: (index) => cy.get(".inventory_item").eq(index),
     products: () => cy.get(".inventory_item"),
     productImage: function (index) {
-      return this.productItemDiv(index).find(".inventory_item_img");
+      return this.productItemDiv(index).find("img");
     },
     productName: function (index) {
       return this.productItemDiv(index).find(".inventory_item_name");
@@ -35,7 +35,7 @@ class ProductListPage {
   }
 
   selectSortOption(option) {
-    this.elements.productDescription().select(option);
+    this.elements.productSortDropDown().select(option);
   }
 }
 export default ProductListPage;
