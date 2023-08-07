@@ -3,6 +3,7 @@ class ProductListPage {
   elements = {
     title: () => cy.get(".title"),
     productItemDiv: (index) => cy.get(".inventory_item").eq(index),
+    products: () => cy.get(".inventory_item"),
     productImage: function (index) {
       return this.productItemDiv(index).find(".inventory_item_img");
     },
@@ -13,7 +14,7 @@ class ProductListPage {
       return this.productItemDiv(index).find(".inventory_item_desc");
     },
     productPrice: function (index) {
-      return this.productItemDiv(index).find(".inventory_item_desc");
+      return this.productItemDiv(index).find(".inventory_item_price");
     },
     addToCartButton: function (index) {
       return this.productItemDiv(index).find('button').contains('Add to cart');

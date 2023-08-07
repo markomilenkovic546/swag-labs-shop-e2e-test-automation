@@ -62,7 +62,7 @@ it("User cannot continue to Checkout-overview page with First Name field empty "
   checkoutInfoPage.typeLastName(this.checkoutInfo.lastName);
   checkoutInfoPage.typeZip(this.checkoutInfo.zip);
   checkoutInfoPage.clickOnContinueBtn();
-  checkoutInfoPage.elements.errorMessage().should('have.text', 'Error: First Name is required')
+  checkoutInfoPage.elements.errorMessage().should("have.text", "Error: First Name is required");
   cy.url().should("not.include", "checkout-step-two.html");
 });
 
@@ -71,7 +71,7 @@ it("User cannot continue to Checkout-overview page with Last Name field empty ",
   checkoutInfoPage.typeFirstName(this.checkoutInfo.firstName);
   checkoutInfoPage.typeZip(this.checkoutInfo.zip);
   checkoutInfoPage.clickOnContinueBtn();
-  checkoutInfoPage.elements.errorMessage().should('have.text', 'Error: Last Name is required')
+  checkoutInfoPage.elements.errorMessage().should("have.text", "Error: Last Name is required");
   cy.url().should("not.include", "checkout-step-two.html");
 });
 
@@ -93,18 +93,121 @@ it("User cannot continue to Checkout-overview page with letters and numbers in Z
   cy.url().should("not.include", "checkout-step-two.html");
 });
 
-it("User cannot continue to Checkout-overview page with all fields empty ", function () {
+it("User cannot continue to Checkout-overview page with all empty fields ", function () {
   cy.proceedToCheckout();
   checkoutInfoPage.clickOnContinueBtn();
-  checkoutInfoPage.elements.errorMessage().should('have.text', 'Error: Last Name is required')
+  checkoutInfoPage.elements.errorMessage().should("have.text", "Error: Last Name is required");
   cy.url().should("not.include", "checkout-step-two.html");
 });
 
 it("User can hide error message ", function () {
   cy.proceedToCheckout();
   checkoutInfoPage.clickOnContinueBtn();
-  checkoutInfoPage.clickOnHideErrorMessageBtn()
-  checkoutInfoPage.elements.errorMessage().should('not.be','visible')
+  checkoutInfoPage.clickOnHideErrorMessageBtn();
+  checkoutInfoPage.elements.errorMessage().should("not.be", "visible");
+});
+
+it("Products from the cart are shown on the Checkout-overview page ", function () {
+  // Add first item into the cart
+  plp.clickOnAddToCartBtn(0);
+  // Add second item into the cart
+  plp.clickOnAddToCartBtn(1);
+  // Open the "Cart" page
+  header.clickOnTheCartIcon();
+  cart.clickOnCheckoutBtn();
+  cy.submitCheckoutInfoForm();
+  //Verify that first item is same as in the cart
+  checkoutOverviewPage.elements.itemName(0).should("have.text", this.products[0].name);
+  checkoutOverviewPage.elements.itemDescription(0).should("have.text", this.products[0].description);
+  checkoutOverviewPage.elements.itemPrice(0).should("have.text", "$" + this.products[0].price);
+  //Verify that second item is same as in the cart
+  checkoutOverviewPage.elements.itemName(1).should("have.text", this.products[1].name);
+  checkoutOverviewPage.elements.itemDescription(1).should("have.text", this.products[1].description);
+  checkoutOverviewPage.elements.itemPrice(1).should("have.text", "$" + this.products[1].price);
+  checkoutOverviewPage.elements.cartItems().should("have.length", 2);
+});
+
+it("Correct payment info is shown on the Checkout-overview page", function () {
+  // Add first item into the cart
+  plp.clickOnAddToCartBtn(0);
+  // Add second item into the cart
+  plp.clickOnAddToCartBtn(1);
+  // Open the "Cart" page
+  header.clickOnTheCartIcon();
+  cart.clickOnCheckoutBtn();
+  cy.submitCheckoutInfoForm();
+  checkoutOverviewPage.elements.paymentInformation().should("have.text", this.checkoutInfo.paymentInformation);
+});
+
+it("Correct shiping info is shown on the Checkout-overview page", function () {
+  // Add first item into the cart
+  plp.clickOnAddToCartBtn(0);
+  // Add second item into the cart
+  plp.clickOnAddToCartBtn(1);
+  // Open the "Cart" page
+  header.clickOnTheCartIcon();
+  cart.clickOnCheckoutBtn();
+  cy.submitCheckoutInfoForm();
+  checkoutOverviewPage.elements.shippingInformation().should("have.text", this.checkoutInfo.shippingInformation);
+});
+
+it.only("Correct item total price is shown on the Checkout-overview page", function () {
+  // Add first item into the cart
+  plp.clickOnAddToCartBtn(0);
+  // Add second item into the cart
+  plp.clickOnAddToCartBtn(1);
+  // Open the "Cart" page
+  header.clickOnTheCartIcon();
+  cart.clickOnCheckoutBtn();
+  cy.submitCheckoutInfoForm();
+  checkoutOverviewPage.elements.itemTotal().then(($itemTotalPrice) => {
+    // Calculate expected total item price
+    const expectedItemTotalPrice = Number(this.products[0].price) + Number(this.products[1].price);
+    // Verify that total item price calculation is correct
+    cy.wrap($itemTotalPrice).should("have.text", `Item total: $${expectedItemTotalPrice}`);
+  });
+});
+
+it.only("Correct tax value is shown on the Checkout-overview page", function () {
+  // Add first item into the cart
+  plp.clickOnAddToCartBtn(0);
+  // Add second item into the cart
+  plp.clickOnAddToCartBtn(1);
+  // Open the "Cart" page
+  header.clickOnTheCartIcon();
+  cart.clickOnCheckoutBtn();
+  cy.submitCheckoutInfoForm();
+  checkoutOverviewPage.elements.tax().then(($taxValue) => {
+    // Calculate expected total item price
+    const expectedItemTotalPrice = Number(this.products[0].price) + Number(this.products[1].price);
+    // Calculate expected tax value when tax rate is 8%
+    const expectedTaxValue = expectedItemTotalPrice * 0.08;
+    // Verify that tax value calculation is correct
+    cy.wrap($taxValue).should("have.text", `Tax: $${expectedTaxValue.toFixed(2)}`);
+  });
+})
+
+  it.only("Correct Total price is shown on the Checkout-overview page", function () {
+    // Add first item into the cart
+    plp.clickOnAddToCartBtn(0);
+    // Add second item into the cart
+    plp.clickOnAddToCartBtn(1);
+    // Open the "Cart" page
+    header.clickOnTheCartIcon();
+    cart.clickOnCheckoutBtn();
+    cy.submitCheckoutInfoForm();
+    checkoutOverviewPage.elements.tax().then(($taxValue) => {
+      // Calculate expected total item price
+      const expectedItemTotalPrice = Number(this.products[0].price) + Number(this.products[1].price);
+      // Calculate expected tax value when tax rate is 8%
+      const expectedTaxValue = expectedItemTotalPrice * 0.08;
+      // Calculate expected tax value when tax rate is 8%
+      const expectedTotalPrice = expectedItemTotalPrice + expectedTaxValue
+      checkoutOverviewPage.elements.total().then(($totalPrice) => {
+      // Verify that Total price calculation is correct
+      cy.wrap($totalPrice).should("have.text", `Total: $${expectedTotalPrice.toFixed(2)}`);
+    });
+  })
 });
 
 it("Products from the cart are shown on the Checkout-overview page ", function () {

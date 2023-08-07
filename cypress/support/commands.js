@@ -58,3 +58,29 @@ Cypress.Commands.add("submitCheckoutInfoForm", () => {
     checkoutInfoPage.clickOnContinueBtn();
   });
 });
+
+
+Cypress.Commands.add("writeProductDataIntoFixtureFile", () => {
+  let products = [];
+  plp.elements.products().each(($product, index, $list) => {
+    let product = {
+      name: null,
+      description: null,
+      price: null,
+    };
+    const productName = $product.find(".inventory_item_name").text();
+    const productDescription = $product.find(".inventory_item_desc").text();
+    cy.wrap($product)
+      .find(".inventory_item_price")
+      .invoke('text').then((productPriceText) => {
+        const productPrice = productPriceText.match(/\d+\.*\d*/g)
+        product.name = productName
+        product.description = productDescription
+        product.price = productPrice[0]
+        products.push(product)
+  });
+});
+  console.log(products)
+  cy.writeFile('cypress/fixtures/products.js', products)
+});
+
