@@ -3,8 +3,8 @@ import ProductListPage from "../pom-classes/Product-list-page";
 import ProductDetailsPage from "../pom-classes/Product-details-page";
 import Header from "../pom-classes/Header";
 import CartPage from "../pom-classes/Cart-page";
-import CheckOutInfoPage from "../pom-classes/Checkout-info-page";
-import CheckOutOverviewPage from "../pom-classes/Checkout-overview-page";
+import CheckoutInfoPage from "../pom-classes/Checkout-info-page";
+import CheckoutOverviewPage from "../pom-classes/Checkout-overview-page";
 import CheckoutCompletePage from "../pom-classes/Checkout-complete-page";
 
 const loginPage = new LoginPage();
@@ -12,8 +12,8 @@ const plp = new ProductListPage();
 const pdp = new ProductDetailsPage();
 const header = new Header();
 const cart = new CartPage();
-const checkoutInfoPage = new CheckOutInfoPage();
-const checkoutOverviewPage = new CheckOutOverviewPage();
+const checkoutInfoPage = new CheckoutInfoPage();
+const checkoutOverviewPage = new CheckoutOverviewPage();
 const checkoutCompletePage = new CheckoutCompletePage();
 
 beforeEach(function () {
@@ -22,7 +22,7 @@ beforeEach(function () {
     this.standard_user = loginData[0];
     cy.login(this.standard_user.username, this.standard_user.password);
   });
-  //cy.writeProductDataIntoFixtureFile();
+  cy.writeProductDataIntoFixtureFile();
   cy.fixture("products").then((productData) => {
     this.products = productData;
   });
@@ -37,13 +37,15 @@ afterEach(function () {
   header.clickOnResetAppStateLinkFromBurger();
 });
 
+describe("Tests which cover functionalites related to Product-sorting ", () => {
+
 it("Products should be sorted by name A-Z by default", function () {
     cy.sortExpectedProductsByNameAZ(this.products).then((expectedSortedProducts) => {
       // Verify that products are sorted by name A-Z by default
       cy.compareProductListWithTestData(expectedSortedProducts);
     });
   });
-  
+
 it("User can sort products by price descending", function () {
   cy.sortExpectedProductsByPriceDESC(this.products).then((expectedSortedProducts) => {
     // Select "price (high to low)" option from Sort product DDM
@@ -81,5 +83,4 @@ it("User can sort products by name Z-A", function () {
       cy.compareProductListWithTestData(expectedSortedProducts);
     });
   })
-
-
+})

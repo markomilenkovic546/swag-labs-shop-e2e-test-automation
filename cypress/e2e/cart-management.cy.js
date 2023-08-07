@@ -25,7 +25,7 @@ afterEach(function () {
   header.clickOnResetAppStateLinkFromBurger();
 });
 
-describe("Tests which cover functionalites realated to cart management ", () => {
+describe("Tests which cover functionalites related to cart management ", () => {
   it("User can add a single item into the cart", function () {
     // Add first item into the cart
     plp.clickOnAddToCartBtn(0);

@@ -36,27 +36,23 @@ afterEach(function () {
   header.openBurgerMenu();
   header.clickOnResetAppStateLinkFromBurger();
 });
-describe("Tests which cover functionalites related to Product-catalog ", () => {
 
-it("User can navigate from PLP to corresponding Product-details-page", function () {
-  for (let i = 0; i < this.products.length; i++) {
-    plp.elements.productName(i).click();
-    pdp.elements.productName().should("have.text", this.products[i].name);
-    pdp.elements.productDescription().should("have.text", this.products[i].description);
-    pdp.elements.productPrice().should("have.text", "$" + this.products[i].price);
-    pdp.elements.productImage()
-      .invoke("attr", "src")
-      .then((src) => {
-        expect(src).to.eq(this.products[i].image);
-        cy.wait(500);
+describe("Smoke Tests", () => {
+    it("User can successfully place an order ", function () {
+        // Add first item into the cart
+        plp.clickOnAddToCartBtn(0);
+        header.clickOnTheCartIcon();
+        cart.clickOnCheckoutBtn();
+        cy.fixture("checkout-info").then((checkoutInfo) => {
+          checkoutInfoPage.typeFirstName(checkoutInfo.firstName);
+          checkoutInfoPage.typeLastName(checkoutInfo.lastName);
+          checkoutInfoPage.typeZip(checkoutInfo.zip);
+          checkoutInfoPage.clickOnContinueBtn();
+          checkoutOverviewPage.clickOnFinishBtn();
+          cy.url().should("include", "checkout-complete.html");
+          checkoutCompletePage.elements.completitionMessage().should("have.text", "Thank you for your order!");
+          checkoutCompletePage.clickOnBackHomeBtn();
+          cy.url().should("include", "inventory.html");
+        });
       });
-    pdp.clickOnBackToProductsBtn();
-  }
-});
-
-it("User can navigate back from PDP to PLP", function () {
-  plp.elements.productName(0).click();
-  pdp.clickOnBackToProductsBtn();
-  cy.url().should("include", "inventory.html");
-});
 })

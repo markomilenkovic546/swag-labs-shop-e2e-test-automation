@@ -2,16 +2,16 @@ import LoginPage from "../pom-classes/Login-page";
 import ProductListPage from "../pom-classes/Product-list-page";
 import Header from "../pom-classes/Header";
 import CartPage from "../pom-classes/Cart-page";
-import CheckOutInfoPage from "../pom-classes/Checkout-info-page";
-import CheckOutOverviewPage from "../pom-classes/Checkout-overview-page";
+import CheckoutInfoPage from "../pom-classes/Checkout-info-page";
+import CheckoutOverviewPage from "../pom-classes/Checkout-overview-page";
 import CheckoutCompletePage from "../pom-classes/Checkout-complete-page";
 
 const loginPage = new LoginPage();
 const plp = new ProductListPage();
 const header = new Header();
 const cart = new CartPage();
-const checkoutInfoPage = new CheckOutInfoPage();
-const checkoutOverviewPage = new CheckOutOverviewPage();
+const checkoutInfoPage = new CheckoutInfoPage();
+const checkoutOverviewPage = new CheckoutOverviewPage();
 const checkoutCompletePage = new CheckoutCompletePage();
 
 beforeEach(function () {
@@ -35,7 +35,9 @@ afterEach(function () {
   header.clickOnResetAppStateLinkFromBurger();
 });
 
-it("User can successfully place order ", function () {
+describe("Tests which cover functionalites related to Order-placement ", () => {
+
+it("User can successfully place an order ", function () {
   // Add first item into the cart
   plp.clickOnAddToCartBtn(0);
   header.clickOnTheCartIcon();
@@ -105,3 +107,4 @@ it("Once the user cancel the order cart should not be cleared", function () {
     cart.elements.cartItems().should("have.length", 1);
   });
 });
+})

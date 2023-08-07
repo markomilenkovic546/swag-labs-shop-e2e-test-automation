@@ -1,4 +1,4 @@
-class CheckOutInfoPage {
+class CheckoutInfoPage {
     // Elements
     elements = {
       firstNameField: () => cy.get('[data-test="firstName"]'),
@@ -32,4 +32,4 @@ class CheckOutInfoPage {
         this.elements.hideErrorMessageBtn().click();
       }
   }
-  export default CheckOutInfoPage;
+  export default CheckoutInfoPage;
