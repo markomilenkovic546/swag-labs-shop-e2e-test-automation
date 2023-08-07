@@ -67,7 +67,7 @@ describe("Tests which cover functionalites realated to cart management ", () => 
     cart.elements.cartItems().should("not.exist");
   });
 
-  it("User can remove the item from the cart when multiple items are in the cart", function () {
+  it("User can remove one of the multiple items from the cart", function () {
     // Add first 2 item into the cart
     plp.clickOnAddToCartBtn(0);
     plp.clickOnAddToCartBtn(1);
@@ -104,7 +104,7 @@ describe("Tests which cover functionalites realated to cart management ", () => 
     cart.elements.cartItems().should("not.exist");
   });
 
-  it("User can remove single item from the Cart from PLP when multiple Items are in the cart", function () {
+  it("User can remove one of multiple items from the Cart from PLP ", function () {
     // Add first item into the cart
     plp.clickOnAddToCartBtn(0);
     plp.clickOnAddToCartBtn(1);
