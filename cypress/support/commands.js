@@ -16,6 +16,34 @@ Cypress.Commands.add("login", (username, password) => {
   loginPage.clickOnLoginBtn();
 });
 
+/* Because FE of this demo webshop doesn't fetch product data from backend,
+product test data will be extracted from HTML and written into fixture file
+*/
+Cypress.Commands.add("writeProductDataIntoFixtureFile", () => {
+  let products = [];
+  plp.elements.products().each(($product, index, $list) => {
+    let product = {
+      name: null,
+      description: null,
+      price: null,
+    };
+    const productName = $product.find(".inventory_item_name").text();
+    const productDescription = $product.find(".inventory_item_desc").text();
+    cy.wrap($product)
+      .find(".inventory_item_price")
+      .invoke("text")
+      .then((productPriceText) => {
+        const productPrice = productPriceText.match(/\d+\.*\d*/g);
+        product.name = productName;
+        product.description = productDescription;
+        product.price = productPrice[0];
+        products.push(product);
+      });
+  });
+  console.log(products);
+  cy.writeFile("cypress/fixtures/products.js", products);
+});
+
 Cypress.Commands.add("proceedToCheckout", () => {
   plp.clickOnAddToCartBtn(0);
   header.clickOnTheCartIcon();
@@ -30,6 +58,7 @@ Cypress.Commands.add("submitCheckoutInfoForm", () => {
     checkoutInfoPage.clickOnContinueBtn();
   });
 });
+
 
 Cypress.Commands.add("writeProductDataIntoFixtureFile", () => {
   let products = [];
@@ -48,11 +77,10 @@ Cypress.Commands.add("writeProductDataIntoFixtureFile", () => {
         product.name = productName
         product.description = productDescription
         product.price = productPrice[0]
-     
-     
-      products.push(product)
+        products.push(product)
   });
 });
   console.log(products)
   cy.writeFile('cypress/fixtures/products.js', products)
 });
+
